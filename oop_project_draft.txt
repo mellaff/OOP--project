@@ -1,0 +1,15 @@
+**Monopoly Game – Class Structure Draft**
+
+**1. Core Classes:**  
+- **MonopolyGame**: Manages game flow, turns, and rules.  
+- **Player**: Stores player information (name, money, properties, actions).  
+- **Board**: Contains all tiles and tracks player positions.  
+- **Tile**: Base class for all board spaces.  
+    - **Property**: Purchasable tiles (can be bought, rented).   
+    - **ChanceTile / CommunityChestTile**: Triggers card draws.  
+    - **GoTile / JailTile / FreeParkingTile / GoToJailTile**: Special non-purchasable spaces.  
+- **Card**: Base class for Chance and Community Chest cards.  
+    - **ChanceCard / CommunityChestCard**: Implements card effects.  
+- **Dice**: Simulates dice rolls for movement.  
+- **Bank**: Manages money, mortgages, and auctions.  
+- **GameRules**: Defines core rules (property purchase, jail handling, passing Go, etc.).  
