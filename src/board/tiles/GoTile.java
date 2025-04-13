@@ -3,6 +3,7 @@ package board.tiles;
 import players.Player;
 
 public class GoTile extends Tile {
+   //Bonus for every passing through GoTile
     private final int bonus = 200;
     //private int initialMoney = 2000;
 

@@ -18,5 +18,6 @@ public abstract class Tile {
 
     public abstract String getType();
 
+    //The action that happens when a player lands on a tile
     public abstract void tileAction(Player player);
 }

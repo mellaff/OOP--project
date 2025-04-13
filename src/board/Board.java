@@ -4,6 +4,7 @@ import board.tiles.*;
 
 public class Board {
     private final Tile[] tiles;
+    //Total number of tiles
     private final int SIZE;
 
     public Board(int size) {
@@ -12,6 +13,7 @@ public class Board {
         initialise();
     }
 
+    //Mutator for a tile at a specific position
     public void setTile(int position, Tile tile) {
         if (position >= 0 && position < SIZE) {
             tiles[position] = tile;
@@ -20,6 +22,7 @@ public class Board {
         }
     }
 
+    //Accessor for the Tile at a specific position
     public Tile getTile(int position) {
         if (position >= 0 && position < SIZE) {
             return tiles[position];
@@ -27,6 +30,7 @@ public class Board {
         return null;
     }
 
+    // Initializes the board with special tiles at specific positions
     public void initialise() {
         setTile(0, new GoTile());
         setTile((SIZE/4), new JailTile());
@@ -40,6 +44,7 @@ public class Board {
         }
     }
 
+    // Prints the board
     public void printBoard() {
 
     }

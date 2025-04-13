@@ -15,6 +15,6 @@ public class JailTile extends Tile {
 
     @Override
     public void tileAction(Player player) {
-        System.out.println("You are just visiting Jail.");
+        System.out.println("You are visiting Jail.");
     }
 }

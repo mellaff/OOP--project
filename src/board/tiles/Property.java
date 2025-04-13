@@ -26,6 +26,7 @@ public class Property extends Tile {
         return "Property";
     }
 
+    //Method of the property to be bought
     public void buy(Player player) {
         if (!isOwned() && player.getMoney() >= price) {
             player.removeMoney(price);
