@@ -1,4 +1,22 @@
 package board.tiles;
+import players.Player;
 
-public class Tile {
+public abstract class Tile {
+    protected final String name;
+
+    public Tile() {
+        this.name = getType();
+    }
+
+    public Tile(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public abstract String getType();
+
+    public abstract void tileAction(Player player);
 }
