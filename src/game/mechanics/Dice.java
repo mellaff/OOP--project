@@ -2,6 +2,16 @@ package game.mechanics;
 import java.util.Random;
 
 public class Dice {
+
+	/*DiceEventListener is an interface used to notify other classes
+ 	 when a dice roll has occurred.
+ 
+ 	 This allows us to separate the logic of the dice from the logic
+ 	 of what happens *after* a roll — for example, updating the player’s position,
+ 	 checking for doubles, or triggering tile actions.*/
+	public interface DiceEventListener {
+    		void onDiceRolled(int die1, int die2);
+	}
     	// Variables to store the two dice values
     	private int die1;
     	private int die2;
