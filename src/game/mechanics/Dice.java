@@ -49,34 +49,28 @@ public class Dice {
         	// Prints out the dice using PrintDice
         	printDice(die1, die2);
     	}
-
     	// Accessor for die1
     	public int getDie1() {
         	return die1;
     	}
-
     	// Accessor for die2
     	public int getDie2() {
         	return die2;
     	}
-
     	// Accessor total of both dice
     	public int getTotal() {
         	return die1 + die2;
     	}
-
     	// Checks if the player rolled a double
     	public boolean isDouble() {
         	return die1 == die2;
     	}
-
     	// String representation for dice result
     	@Override
     	public String toString() {
         	return "Dice rolled: " + die1 + " and " + die2 + "\nTotal steps: " + getTotal() +
             	(isDouble() ? "\nDoubles! You get to roll again!" : "");
     	}
-
     	// Prints dice visually side by side
     	private void printDice(int d1, int d2) {
         	String[] die1Art = getDieFace(d1);
@@ -88,7 +82,6 @@ public class Dice {
         	}
         	System.out.println(toString());
     	}
-
     	// Returns pattern for a given die face value (1–6)
 	private String[] getDieFace(int value) {
     		// Grid positions (3x3): 1-9
@@ -110,7 +103,6 @@ public class Dice {
         	default:
             		break;
     		}
-
     		// Constructs the die face line by line
     		return new String[]{
         		"---------",
@@ -120,8 +112,6 @@ public class Dice {
         		"---------"
     		};
 	}
-
-
     	// Main method for quick testing
     	public static void main(String[] args) {
         	Dice dice = new Dice();
