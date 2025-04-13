@@ -2,37 +2,99 @@ package players;
 
 public class Player {
     private String name;
+    private int position;
     private int money;
-    public boolean started = false;
+    private boolean inJail;
+    private int jailTurns;
+    private int getOutOfJailFreeCards;
+    private boolean bankrupt;
+
     public Player(String name) {
         this.name = name;
+        this.money = 2000; // Default starting money
+        this.position = 0;
+        this.inJail = false;
+        this.jailTurns = 0;
+        this.getOutOfJailFreeCards = 0;
+        this.bankrupt = false;
     }
+
+    public void move(int steps) {
+        position = (position + steps) % 40;
+    }
+
+    public void pay(int amount) {
+        if (money >= amount){
+            money -= amount;
+        }
+        else
+            System.out.println("No sufficent balance. You become a bankrupt.");
+            bunkrupt = true;
+        
+        }
+    }
+
+    public void receive(int amount) {
+        money += amount;
+    }
+
+    public void goToJail() {
+        inJail = true;
+        jailTurns = 3;
+        position = 10;
+    }
+
+    public void releaseFromJail() {
+        inJail = false;
+        jailTurns = 0;
+    }
+
+    public void decrementJailTurn() {
+        if (jailTurns > 0) {
+            jailTurns--;
+            if (jailTurns == 0) {
+                releaseFromJail();
+            }
+        }
+    }
+
+    public void addGetOutOfJailFreeCard() {
+        getOutOfJailFreeCards++;
+    }
+
+    public void useGetOutOfJailFreeCard() {
+        if (getOutOfJailFreeCards > 0) {
+            getOutOfJailFreeCards--;
+            releaseFromJail();
+        }
+    }
+
+    // Getters
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void addMoney(double money) {
-        this.money += money;
+    public int getPosition() {
+        return position;
     }
 
     public int getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public boolean isInJail() {
+        return inJail;
     }
 
-    public boolean removeMoney(int money) {
-        if(this.money < money) {
-            return false;
-        } else{
-            this.money -= money;
-            return true;
-        }
+    public int getJailTurns() {
+        return jailTurns;
+    }
+
+    public boolean isBankrupt() {
+        return bankrupt;
+    }
+
+    public int getGetOutOfJailFreeCards() {
+        return getOutOfJailFreeCards;
     }
 }
