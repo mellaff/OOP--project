@@ -2,99 +2,122 @@ package players;
 
 public class Player {
     private String name;
-    private int position;
     private int money;
+    private int position;
     private boolean inJail;
     private int jailTurns;
-    private int getOutOfJailFreeCards;
     private boolean bankrupt;
+    private int getOutOfJailFreeCards;
+    private boolean missTurn; // Added to support 'miss 1 turn'
 
-    public Player(String name) {
-        this.name = name;
-        this.money = 2000; // Default starting money
+    public Player(String var1) {
+        this.name = var1;
+        this.money = 2000;
         this.position = 0;
         this.inJail = false;
         this.jailTurns = 0;
-        this.getOutOfJailFreeCards = 0;
         this.bankrupt = false;
+        this.getOutOfJailFreeCards = 0;
+        this.missTurn = false;
     }
 
-    public void move(int steps) {
-        position = (position + steps) % 40;
+    public void receive(int var1) {
+        this.money += var1;
     }
 
-    public void pay(int amount) {
-        if (money >= amount){
-            money -= amount;
+    public void pay(int var1) {
+        this.money -= var1;
+        if (this.money < 0) {
+            this.bankrupt = true;
         }
-        else
-            System.out.println("No sufficent balance. You become a bankrupt.");
-            bunkrupt = true;
-        
-        }
-    }
-
-    public void receive(int amount) {
-        money += amount;
     }
 
     public void goToJail() {
-        inJail = true;
-        jailTurns = 3;
-        position = 10;
+        this.inJail = true;
+        this.jailTurns = 3;
+        this.position = 10; // Assuming Jail is at position 10
     }
 
-    public void releaseFromJail() {
-        inJail = false;
-        jailTurns = 0;
+    public void getOutOfJail() {
+        this.inJail = false;
+        this.jailTurns = 0;
     }
 
-    public void decrementJailTurn() {
-        if (jailTurns > 0) {
-            jailTurns--;
-            if (jailTurns == 0) {
-                releaseFromJail();
+    public void decreaseJailTurn() {
+        if (this.jailTurns > 0) {
+            --this.jailTurns;
+            if (this.jailTurns == 0) {
+                this.inJail = false;
             }
         }
     }
 
     public void addGetOutOfJailFreeCard() {
-        getOutOfJailFreeCards++;
+        ++this.getOutOfJailFreeCards;
     }
 
-    public void useGetOutOfJailFreeCard() {
-        if (getOutOfJailFreeCards > 0) {
-            getOutOfJailFreeCards--;
-            releaseFromJail();
+    public boolean useGetOutOfJailFreeCard() {
+        if (this.getOutOfJailFreeCards > 0) {
+            --this.getOutOfJailFreeCards;
+            this.getOutOfJail();
+            return true;
+        } else {
+            return false;
         }
     }
 
-    // Getters
+    public void move(int var1) {
+        this.position = (this.position + var1 + 40) % 40;
+        // +40 to make sure negative moves (like -3) still wrap correctly
+    }
+
+    
+
+    // Move directly to a specific position
+    public void moveTo(int newPosition) {
+        this.position = newPosition % 40;
+    }
+
+    // To check if player needs to miss a turn
+    public boolean isMissTurn() {
+        return missTurn;
+    }
+
+    // To set player to miss or not miss a turn
+    public void setMissTurn(boolean missTurn) {
+        this.missTurn = missTurn;
+    }
+
+    // Getter Methods
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int getPosition() {
-        return position;
+        return this.position;
     }
 
     public int getMoney() {
-        return money;
+        return this.money;
     }
 
     public boolean isInJail() {
-        return inJail;
+        return this.inJail;
     }
 
     public int getJailTurns() {
-        return jailTurns;
+        return this.jailTurns;
     }
 
     public boolean isBankrupt() {
-        return bankrupt;
+        return this.bankrupt;
     }
 
     public int getGetOutOfJailFreeCards() {
-        return getOutOfJailFreeCards;
+        return this.getOutOfJailFreeCards;
+    }
+
+    public void moveToNearestCultureCenter() {
+
     }
 }
