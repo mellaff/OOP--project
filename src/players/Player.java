@@ -1,5 +1,7 @@
 package players;
 
+import java.util.ArrayList;
+
 public class Player {
     private String name;
     private int money;
@@ -8,10 +10,12 @@ public class Player {
     private int jailTurns;
     private boolean bankrupt;
     private int getOutOfJailFreeCards;
-    private boolean missTurn; // Added to support 'miss 1 turn'
+    private boolean missTurn;
+    private ArrayList<String> properties;
+    private boolean hasDiscount;// Added to support 'miss 1 turn'
 
-    public Player(String var1) {
-        this.name = var1;
+    public Player(String name) {
+        this.name = name;
         this.money = 2000;
         this.position = 0;
         this.inJail = false;
@@ -19,14 +23,16 @@ public class Player {
         this.bankrupt = false;
         this.getOutOfJailFreeCards = 0;
         this.missTurn = false;
+        this.properties = new ArrayList<>();
+        this.hasDiscount = false;
     }
 
-    public void receive(int var1) {
-        this.money += var1;
+    public void receive(int money) {
+        this.money += money;
     }
 
-    public void pay(int var1) {
-        this.money -= var1;
+    public void pay(int money) {
+        this.money -= money;
         if (this.money < 0) {
             this.bankrupt = true;
         }
@@ -66,12 +72,12 @@ public class Player {
         }
     }
 
-    public void move(int var1) {
-        this.position = (this.position + var1 + 40) % 40;
+    public void move(int position) {
+        this.position = (this.position + position + 40) % 40;
         // +40 to make sure negative moves (like -3) still wrap correctly
     }
 
-    
+
 
     // Move directly to a specific position
     public void moveTo(int newPosition) {
@@ -85,7 +91,16 @@ public class Player {
 
     // To set player to miss or not miss a turn
     public void setMissTurn(boolean missTurn) {
+
         this.missTurn = missTurn;
+    }
+
+    public void addProperty(String propertyName) {
+        properties.add(propertyName);
+    }
+
+    public void removeProperty(String propertyName) {
+        properties.remove(propertyName);
     }
 
     // Getter Methods
@@ -97,27 +112,53 @@ public class Player {
         return this.position;
     }
 
+    public ArrayList<String> getProperties() {
+        return properties;
+    }
+
     public int getMoney() {
+
         return this.money;
     }
 
     public boolean isInJail() {
+
         return this.inJail;
     }
 
     public int getJailTurns() {
+
         return this.jailTurns;
     }
 
     public boolean isBankrupt() {
+
         return this.bankrupt;
     }
 
     public int getGetOutOfJailFreeCards() {
+
         return this.getOutOfJailFreeCards;
     }
 
     public void moveToNearestCultureCenter() {
+
+    }
+
+    public boolean setNextDiscount() {
+        return hasDiscount = true;
+
+    }
+
+    public boolean useDiscount() {
+        return hasDiscount = false;
+    }
+
+    public void moveToNearestCommercialProperty() {
+
+    }
+
+    public void moveToNearestPark() {
 
     }
 }
