@@ -81,6 +81,7 @@ public class Player {
 
     // Move directly to a specific position
     public void moveTo(int newPosition) {
+
         this.position = newPosition % 40;
     }
 
@@ -141,24 +142,19 @@ public class Player {
         return this.getOutOfJailFreeCards;
     }
 
-    public void moveToNearestCultureCenter() {
 
-    }
 
     public boolean setNextDiscount() {
+
         return hasDiscount = true;
 
     }
 
     public boolean useDiscount() {
+
         return hasDiscount = false;
     }
 
-    public void moveToNearestCommercialProperty() {
 
-    }
 
-    public void moveToNearestPark() {
-
-    }
 }
