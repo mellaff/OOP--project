@@ -46,10 +46,11 @@ public class MonopolyGUI extends JFrame {
         board = new Board();
         dice = new Dice();
         setTitle("Monopoly Game");
-        setSize(900, 900);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+
         String[] names = getPlayerNames();
         players = new Player[names.length];
         for (int i = 0; i < names.length; i++) {
@@ -102,11 +103,6 @@ public class MonopolyGUI extends JFrame {
 
         // Add side panel to EAST
         add(sidePanel, BorderLayout.EAST);
-
-
-
-        boardPanel = new BoardPanel(players);
-        add(boardPanel, BorderLayout.CENTER);
 
         currentTurnLabel = new JLabel("Turn: " + players[currentPlayerIndex].getName());
         currentTurnLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -174,7 +170,7 @@ public class MonopolyGUI extends JFrame {
 
     private void log(String message) {
         gameLogArea.append(message + "\n");
-        gameLogArea.setCaretPosition(gameLogArea.getDocument().getLength()); // Auto-scroll to bottom
+        gameLogArea.setCaretPosition(gameLogArea.getDocument().getLength());
     }
 
     private String[] getPlayerNames() {
@@ -222,7 +218,7 @@ public class MonopolyGUI extends JFrame {
 
                 int die1 = dice.getDie1();
                 int die2 = dice.getDie2();
-                int roll = 7;
+                int roll = die1+die2;
 
                 diceResultLabel.setText("Roll: " + roll);
                 if(die1==die2){
@@ -243,6 +239,7 @@ public class MonopolyGUI extends JFrame {
                             JOptionPane.INFORMATION_MESSAGE
                     );
                     currentPlayer.receive(200);
+                    currentPlayer.setPassedGo(false);
                 }
                 boardPanel.repaint();
 
@@ -294,7 +291,7 @@ public class MonopolyGUI extends JFrame {
 
                             } else if(currentPlayer.moveToNearestStation()){
                                 int newPosition = 1;
-                                while(board.getTile(currentPlayer.getPosition()+newPosition).getType().equals("Property") && ((Property)board.getTile(currentPlayer.getPosition()+newPosition)).getGroup().equals("station")){
+                                while(!board.getTile(currentPlayer.getPosition()+newPosition).getType().equals("Property") || !((Property)board.getTile(currentPlayer.getPosition()+newPosition)).getGroup().equals("station")){
                                     newPosition++;
                                 }
                                 currentPlayer.move(newPosition);
@@ -351,7 +348,6 @@ public class MonopolyGUI extends JFrame {
                 if (currentPlayer.isBankrupt()) {
                     String loserName = players[currentPlayerIndex].getName();
 
-                    // Transfer or release assets (simplified: release)
                     for (Property prop : currentPlayer.getProperties()) {
                         prop.setOwner(null);
                     }
@@ -429,7 +425,7 @@ public class MonopolyGUI extends JFrame {
                     currentTurnLabel.setForeground(players[currentPlayerIndex].getColor());
 
                     rollDiceButton.setEnabled(true);
-                }// enable again
+                }
             }
         });
         timer.start();
@@ -477,11 +473,11 @@ public class MonopolyGUI extends JFrame {
             int centerY = 4 * tileSize + 50;
             int centerSize = 3 * tileSize;
 
-// Draw central red square
+            // Draw central red square
             g2.setColor(new Color(166, 6, 6)); // Crimson red
             g2.fillRect(centerX, centerY+70, centerSize, centerSize-170);
 
-// Draw MONOPOLY text centered in red area
+            //draw Armopoly
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Arial", Font.BOLD, 36));
             FontMetrics fm = g2.getFontMetrics();
@@ -491,7 +487,7 @@ public class MonopolyGUI extends JFrame {
             int titleY = centerY + centerSize / 2;
             g2.drawString(title, titleX, titleY);
 
-// Draw Chance Deck (Orange)
+            // Draw Chance Deck
             int deckSize = tileSize - 10;
             int chanceX = centerX + tileSize / 2 +300;
             int chanceY = centerY + 2 * tileSize + 100;
@@ -501,7 +497,7 @@ public class MonopolyGUI extends JFrame {
             g2.setFont(new Font("Arial", Font.BOLD, 14));
             g2.drawString("Chance", chanceX + 5, chanceY + 20);
 
-// Draw Community Chest Deck (Sky Blue)
+            // Draw Community Chest Deck
             int chestX = centerX + 2 * tileSize - 300;
             int chestY = centerY + tileSize / 2 -100;
             g2.setColor(new Color(173, 216, 230)); // Sky Blue
@@ -595,8 +591,6 @@ public class MonopolyGUI extends JFrame {
 
                 // Draw the name of the tile
                 if (tile != null) {
-                    // Use a safe fallback font that's visually similar to Futura Bold
-                     // Slightly larger for clarity
 
                     String tileName = tile.getName();
                     if(i%10==0){

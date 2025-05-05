@@ -11,22 +11,22 @@ public class ChanceCard {
     private String effect;
 
     public static ArrayList<ChanceCard> cards = new ArrayList<>(Arrays.asList(
-//            new ChanceCard("You visited Tatev Monastery.", "Gain spiritual bonus. Collect $100."),
-//            new ChanceCard("You took the Wings of Tatev and dropped your wallet.", "Pay $50 for a replacement ID."),
-//            new ChanceCard("You organized a jazz night in Yerevan.", "All players pay you $50 each."),
-//            new ChanceCard("You helped with the grape harvest in Areni.", "Collect $75 for your contribution."),
-//            new ChanceCard("You got on a marshrutka and forgot your stop.", "Miss 1 turn finding your way back."),
-            //new ChanceCard("Your art exhibit opened at Cafesjian Center.", "Advance to the nearest city. If unowned, you may buy it."),
-//            new ChanceCard("You hit the jackpot at the Sevan Casino!", "Collect $150."),
-//            new ChanceCard("You saw a bear in Dilijan.", "Retreat to the nearest safe zone (Go back 3 spaces)."),
-//            new ChanceCard("Tourist season is wild. Sell photos of Mount Ararat.", "Collect $200."),
-//            new ChanceCard("You hosted a hiking tour in Lori.", "Collect $100 from each player."),
-//            new ChanceCard("Unexpected roadwork on Baghramyan Street.", "Pay $50 for tire repairs."),
-//            new ChanceCard("You bought too much tan and gata at Vernissage.", "Lose $20 in snacks."),
-            new ChanceCard("You received a wedding invitation in Etchmiadzin.", "Advance to nearest station. If you pass GO, collect $200.")
-//            new ChanceCard("Real estate boom in Gyumri!", "Your next property purchase costs $100 less."),
-//            new ChanceCard("You danced too hard at a shurjpar.", "Miss 1 turn to recover."),
-//            new ChanceCard("You argued with a traffic cop over a no-parking sign.", "Go directly to Jail. Do not pass GO. Do not collect $200.")
+            new ChanceCard("You visited Tatev Monastery.", "Gain spiritual bonus. Collect $100."),
+            new ChanceCard("You took the Wings of Tatev and dropped your wallet.", "Pay $50 for a replacement ID."),
+            new ChanceCard("You organized a jazz night in Yerevan.", "All players pay you $50 each."),
+            new ChanceCard("You helped with the grape harvest in Areni.", "Collect $75 for your contribution."),
+            new ChanceCard("You got on a marshrutka and forgot your stop.", "Miss 1 turn finding your way back."),
+            new ChanceCard("Your art exhibit opened at Cafesjian Center.", "Advance to the next city. If unowned, you may buy it."),
+            new ChanceCard("You hit the jackpot at the Sevan Casino!", "Collect $150."),
+            new ChanceCard("You saw a bear in Dilijan.", "Retreat to the nearest safe zone (Go back 3 spaces)."),
+            new ChanceCard("Tourist season is wild. Sell photos of Mount Ararat.", "Collect $200."),
+            new ChanceCard("You hosted a hiking tour in Lori.", "Collect $100 from each player."),
+            new ChanceCard("Unexpected roadwork on Baghramyan Street.", "Pay $50 for tire repairs."),
+            new ChanceCard("You bought too much tan and gata at Vernissage.", "Lose $20 in snacks."),
+            new ChanceCard("You received a wedding invitation in Etchmiadzin.", "Advance to next station. If you pass GO, collect $200."),
+            new ChanceCard("Real estate boom in Gyumri!", "Your next property purchase costs $100 less."),
+            new ChanceCard("You danced too hard at a shurjpar.", "Miss 1 turn to recover."),
+            new ChanceCard("You argued with a traffic cop over a no-parking sign.", "Go directly to Jail. Do not pass GO. Do not collect $200.")
     ));
 
     public ChanceCard(String description, String effect) {
@@ -43,20 +43,15 @@ public class ChanceCard {
     }
 
     public static ChanceCard drawCard() {
-        if (cards.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No more chance cards left.");
-            return null;
-        }
-
         Random rand = new Random();
         int index = rand.nextInt(cards.size());
-        return cards.remove(index); // Remove and return
+        return cards.get(index); // Remove and return
     }
 
     // Apply effect to the player
     public void applyChanceEffect(Player player, Player[] players) {
         switch (this.effect) {
-            case "Advance to the nearest city. If unowned, you may buy it.":
+            case "Advance to the next city. If unowned, you may buy it.":
                 player.setMoveToNearestCity(true);
                 break;
             case "Gain spiritual bonus. Collect $100.":
@@ -102,7 +97,7 @@ public class ChanceCard {
             case "Lose $20 in snacks.":
                 player.pay(20);
                 break;
-            case "Advance to nearest station. If you pass GO, collect $200.":
+            case "Advance to next station. If you pass GO, collect $200.":
                 player.setMoveToNearestStation(true); // Adjust as needed
                 break;
             case "Your next property purchase costs $100 less.":

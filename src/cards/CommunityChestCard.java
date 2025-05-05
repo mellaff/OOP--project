@@ -15,7 +15,7 @@ public class CommunityChestCard {
             new CommunityChestCard("Your aunt invited you to a khorovats picnic.", "Miss 1 turn to help prepare."),
             new CommunityChestCard("You helped your grandma make cherry preserves.", "Collect $25 from each player for your kindness."),
             new CommunityChestCard("You donated books to a rural school.", "Collect $100 as a thank-you grant."),
-            new CommunityChestCard("You opened a tarmarzakan (tailor shop).", "Advance to the nearest city."),
+            new CommunityChestCard("You opened a tarmarzakan (tailor shop).", "Advance to the next city."),
             new CommunityChestCard("Blessing from a village grandmother.", "Remove one negative card effect."),
             new CommunityChestCard("Your neighbor’s chickens broke into your garden.", "Pay $40 for damage repair."),
             new CommunityChestCard("You overspent at Yerevan Mall.", "Pay $100 for impulse buys."),
@@ -26,7 +26,7 @@ public class CommunityChestCard {
             new CommunityChestCard("You helped renovate your family dacha.", "Pay $50 for supplies."),
             new CommunityChestCard("You received lavash and cheese from your uncle in the village.", "Enjoy the snack. Collect $20."),
             new CommunityChestCard("You won first place in a patriotic poetry contest.", "Collect $150."),
-            new CommunityChestCard("You planted trees on Tree Planting Day.", "Advance to the nearest station."),
+            new CommunityChestCard("You planted trees on Tree Planting Day.", "Advance to the next station."),
             new CommunityChestCard("Lost wallet found at Cascade.", "Return it. Gain $10 in gratitude from the owner.")
     ));
 
@@ -72,7 +72,7 @@ public class CommunityChestCard {
             case "Collect $100 as a thank-you grant.":
                 player.receive(100);
                 break;
-            case "Advance to the nearest city.":
+            case "Advance to the next city.":
                 player.setMoveToNearestCity(true); // You need to define this method
                 break;
             case "Remove one negative card effect.":
@@ -110,7 +110,7 @@ public class CommunityChestCard {
             case "Collect $150.":
                 player.receive(150);
                 break;
-            case "Advance to the nearest station.":
+            case "Advance to the next station.":
                 player.setMoveToNearestStation(true); // You'll define this based on your board layout
                 break;
             case "Return it. Gain $10 in gratitude from the owner.":

@@ -51,7 +51,14 @@ public class Property extends Tile {
     //Method of the property to be bought
     public void buy(Player player) {
         if (!isOwned() && player.getMoney() >= price) {
-            player.pay(price);
+            if(player.hasDiscount()){
+                int newPrice = price - (price*2)/10;
+                player.useDiscount();
+                JOptionPane.showMessageDialog(null, "Bought with discount.");
+                player.pay(newPrice);
+            }else{
+                player.pay(price);
+            }
             this.owner = player;
             System.out.println(player.getName() + " bought " + name);
         }

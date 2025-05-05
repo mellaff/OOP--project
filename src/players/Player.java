@@ -103,6 +103,10 @@ public class Player {
         return passedGo;
     }
 
+    public void setPassedGo(boolean passed){
+            this.passedGo = passed;
+    }
+
 
 
     // Move directly to a specific position
@@ -185,9 +189,14 @@ public class Player {
 
     }
 
+
     public boolean useDiscount() {
 
         return hasDiscount = false;
+    }
+
+    public boolean hasDiscount(){
+        return hasDiscount;
     }
 
     public int getNumberOfStations() {
