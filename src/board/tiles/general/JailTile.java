@@ -1,4 +1,4 @@
-package board.tiles;
+package board.tiles.general;
 
 import players.Player;
 
@@ -15,6 +15,7 @@ public class JailTile extends Tile {
 
     @Override
     public void tileAction(Player player) {
-        System.out.println("You are visiting Jail.");
+        player.goToJail();
     }
+
 }

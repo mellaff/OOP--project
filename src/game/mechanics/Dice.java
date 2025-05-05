@@ -1,4 +1,5 @@
 package game.mechanics;
+import java.net.URL;
 import java.util.Random;
 
 public class Dice {
@@ -113,6 +114,7 @@ public class Dice {
         	default:
             		break;
     		}
+
     		// Constructs the die face line by line
     		return new String[]{
         		"---------",
@@ -121,6 +123,7 @@ public class Dice {
        			"| " + (dots[6] ? "*" : " ") + " " + (dots[7] ? "*" : " ") + " " + (dots[8] ? "*" : " ") + " |",
         		"---------"
     		};
+
 	}
     	// Main method for quick testing
     	public static void main(String[] args) {

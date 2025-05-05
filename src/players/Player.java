@@ -1,8 +1,13 @@
 package players;
 
+import board.tiles.property.Property;
+import board.tiles.property.Station;
+
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Player {
+
     private String name;
     private int money;
     private int position;
@@ -11,8 +16,13 @@ public class Player {
     private boolean bankrupt;
     private int getOutOfJailFreeCards;
     private boolean missTurn;
-    private ArrayList<String> properties;
+    private ArrayList<Property> properties;
     private boolean hasDiscount;// Added to support 'miss 1 turn'
+    private Color color;
+    private ArrayList<Station> stations;
+    private boolean passedGo = false;
+    private boolean moveToNearestCity;
+    private boolean moveToNearestStation;
 
     public Player(String name) {
         this.name = name;
@@ -24,7 +34,13 @@ public class Player {
         this.getOutOfJailFreeCards = 0;
         this.missTurn = false;
         this.properties = new ArrayList<>();
+        this.stations = new ArrayList<>();
         this.hasDiscount = false;
+    }
+
+    public Player(String name, java.awt.Color color) {
+        this(name);
+        this.color = color;
     }
 
     public void receive(int money) {
@@ -36,6 +52,9 @@ public class Player {
         if (this.money < 0) {
             this.bankrupt = true;
         }
+    }
+    public Color getColor() {
+        return color;
     }
 
     public void goToJail() {
@@ -73,31 +92,43 @@ public class Player {
     }
 
     public void move(int position) {
+        if((this.position + position + 40) % 40<this.position){
+            passedGo = true;
+        }
         this.position = (this.position + position + 40) % 40;
         // +40 to make sure negative moves (like -3) still wrap correctly
+    }
+
+    public boolean passedGo(){
+        return passedGo;
     }
 
 
 
     // Move directly to a specific position
     public void moveTo(int newPosition) {
+        if((newPosition % 40<this.position)){
+            passedGo = true;
+        }
 
         this.position = newPosition % 40;
     }
 
-    // To check if player needs to miss a turn
     public boolean isMissTurn() {
         return missTurn;
     }
 
-    // To set player to miss or not miss a turn
     public void setMissTurn(boolean missTurn) {
 
         this.missTurn = missTurn;
     }
 
-    public void addProperty(String propertyName) {
-        properties.add(propertyName);
+    public void addProperty(Property property) {
+        properties.add(property);
+    }
+
+    public void addStation(Station station) {
+        stations.add(station);
     }
 
     public void removeProperty(String propertyName) {
@@ -113,8 +144,12 @@ public class Player {
         return this.position;
     }
 
-    public ArrayList<String> getProperties() {
+    public ArrayList<Property> getProperties() {
         return properties;
+    }
+
+    public ArrayList<Station> getStations() {
+        return stations;
     }
 
     public int getMoney() {
@@ -153,6 +188,24 @@ public class Player {
     public boolean useDiscount() {
 
         return hasDiscount = false;
+    }
+
+    public int getNumberOfStations() {
+        return stations.size();
+    }
+
+    public void setMoveToNearestCity(boolean move){
+        moveToNearestCity=move;
+    }
+    public boolean moveToNearestCity(){
+        return moveToNearestCity;
+    }
+
+    public void setMoveToNearestStation(boolean move){
+        moveToNearestStation=move;
+    }
+    public boolean moveToNearestStation(){
+        return moveToNearestStation;
     }
 
 

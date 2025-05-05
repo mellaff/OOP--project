@@ -1,4 +1,4 @@
-package board.tiles;
+package board.tiles.general;
 
 import players.Player;
 
@@ -15,7 +15,7 @@ public class FreeParkingTile extends Tile {
 
     @Override
     public void tileAction(Player player) {
-        System.out.println("You must be tired! Park for free for one round.");
+        System.out.println(player.getName() + " is resting at Free Parking. They will skip their next turn.");
+        player.setMissTurn(true);  // Player skips their next turn
     }
-
 }

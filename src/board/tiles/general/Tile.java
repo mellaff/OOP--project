@@ -1,4 +1,4 @@
-package board.tiles;
+package board.tiles.general;
 import players.Player;
 
 public abstract class Tile {
@@ -20,4 +20,7 @@ public abstract class Tile {
 
     //The action that happens when a player lands on a tile
     public abstract void tileAction(Player player);
+    public void tileAction(Player player, Player[] allPlayers) {
+
+    }
 }
