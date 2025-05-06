@@ -50,24 +50,24 @@ public class Property extends Tile {
 
     //Method of the property to be bought
     public void buy(Player player) {
-        if (!isOwned() && player.getMoney() >= price) {
-            if(player.hasDiscount()){
-                int newPrice = price - (price*2)/10;
-                player.useDiscount();
-                JOptionPane.showMessageDialog(null, "Bought with discount.");
-                player.pay(newPrice);
-            }else{
+        if(player.hasDiscount() && !isOwned() && player.getMoney() >=  price - (price*2)/10){
+            int newPrice = price - (price*2)/10;
+            player.useDiscount();
+            JOptionPane.showMessageDialog(null, "Bought with discount.");
+            player.pay(newPrice);
+        }
+        else if (!isOwned() && player.getMoney() >= price) {
                 player.pay(price);
-            }
+        }
             this.owner = player;
             System.out.println(player.getName() + " bought " + name);
-        }
+
     }
 
     @Override
     public void tileAction(Player player) {
         if (!isOwned()) {
-            if(player.getMoney() >= price) {
+            if(player.hasDiscount() && player.getMoney() >= price - (price*2)/10) {
                 int choice = JOptionPane.showConfirmDialog(
                         null,
                         player.getName() + " landed on " + name + " which costs $" + price + ".\nDo you want to buy it?",
@@ -82,7 +82,23 @@ public class Property extends Tile {
                 } else {
                     JOptionPane.showMessageDialog(null, player.getName() + " chose not to buy " + name + ".");
                 }
-            } else{
+            }else if(player.getMoney() >= price){
+                int choice = JOptionPane.showConfirmDialog(
+                        null,
+                        player.getName() + " landed on " + name + " which costs $" + price + ".\nDo you want to buy it?",
+                        "Buy Property",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    buy(player);
+                    player.addProperty(this);
+                    JOptionPane.showMessageDialog(null, player.getName() + " bought " + name + "!");
+                } else {
+                    JOptionPane.showMessageDialog(null, player.getName() + " chose not to buy " + name + ".");
+                }
+            }
+            else{
                 JOptionPane.showMessageDialog(null, " Not enough money to buy this. ");
             }
         } else if (!player.equals(owner)) {
