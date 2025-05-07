@@ -1,4 +1,5 @@
 package game.mechanics;
+import java.io.File;
 import java.net.URL;
 import java.util.Random;
 
@@ -37,16 +38,13 @@ public class Dice {
     	public void rollWithAnimation() {
         	System.out.print("Rolling the dice...");
 
-        	try {
+
             		// Show fake loading dots for suspense
             		for (int i = 0; i < 5; i++) {
-                		Thread.sleep(200);
                 		System.out.print(".");
             		}
             		System.out.println();
-        	} catch (InterruptedException e) {
-            		e.printStackTrace();
-        	}
+
 
         	// Rolls the dice: random numbers between 1 and 6
         	die1 = random.nextInt(6) + 1;
@@ -131,5 +129,6 @@ public class Dice {
 
         	// Rolls the dice with visual animation
         	dice.rollWithAnimation();
+
     	}
 }

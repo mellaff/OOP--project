@@ -61,6 +61,83 @@ public class MonopolyGUI extends JFrame {
         boardPanel = new BoardPanel(players);
         add(boardPanel, BorderLayout.CENTER);
 
+        ImageIcon icon = new ImageIcon("src/assets/community_chest.png");
+        Image scaled = icon.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaled));
+        imageLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
+        boardPanel.setLayout(null);
+        imageLabel.setBounds(200, 160, 130, 130); // X, Y, width, height// Allow manual positioning
+        boardPanel.add(imageLabel);
+        boardPanel.repaint();
+
+        ImageIcon icon2 = new ImageIcon("src/assets/chance.png");
+        Image scaled2 = icon2.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+        JLabel imageLabel2 = new JLabel(new ImageIcon(scaled2));
+        imageLabel2.setBorder(BorderFactory.createLineBorder(Color.black, 5));
+        boardPanel.setLayout(null);
+        imageLabel2.setBounds(610, 580, 130, 130); // X, Y, width, height// Allow manual positioning
+        boardPanel.add(imageLabel2);
+        boardPanel.repaint();
+
+
+        ImageIcon iconTrain = new ImageIcon("src/assets/train.png");
+        Image scaledTrain = iconTrain.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+
+// Positions of the 4 train stations (adjust as needed)
+        int[][] positions = {
+                {800, 420}, // first station
+                {465, 85},  // second station
+                {130, 420},  // third station
+                {465, 760}  // fourth station
+        };
+
+        for (int[] pos : positions) {
+            JLabel imageLabelTrain = new JLabel(new ImageIcon(scaledTrain));
+            imageLabelTrain.setBounds(pos[0], pos[1], 25, 25);
+            boardPanel.add(imageLabelTrain);
+        }
+
+        boardPanel.repaint();
+
+        ImageIcon iconChest = new ImageIcon("src/assets/community_chest_new.png");
+        Image scaledChest = iconChest.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+
+// Positions of the 4 train stations (adjust as needed)
+        int[][] positionsChest = {
+                {675,760}, // first station
+                {130, 630},  // second station
+                {675, 85},  // third station
+                {800, 140}  // fourth station
+        };
+
+        for (int[] pos : positionsChest) {
+            JLabel imageLabelChest = new JLabel(new ImageIcon(scaledChest));
+            imageLabelChest.setBounds(pos[0], pos[1], 25, 25);
+            boardPanel.add(imageLabelChest);
+        }
+
+        boardPanel.repaint();
+
+
+        ImageIcon iconChance = new ImageIcon("src/assets/chance_new.png");
+        Image scaledChance = iconChance.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+
+// Positions of the 4 train stations (adjust as needed)
+        int[][] positionsChance = {
+                {325,760}, // first station
+                {130, 280},  // second station
+                {250, 85},  // third station
+                {800, 630}  // fourth station
+        };
+
+        for (int[] pos : positionsChance) {
+            JLabel imageLabelChance = new JLabel(new ImageIcon(scaledChance));
+            imageLabelChance.setBounds(pos[0], pos[1], 25, 25);
+            boardPanel.add(imageLabelChance);
+        }
+
+        boardPanel.repaint();
+
 
         // EAST: Side Panel for Dice, Controls, Log, Status
         JPanel sidePanel = new JPanel();
@@ -206,7 +283,7 @@ public class MonopolyGUI extends JFrame {
     private void rollDiceAndMove() {
         rollDiceButton.setEnabled(false); // disable during animation
 
-        Timer timer = new Timer(1, null);
+        Timer timer = new Timer(500, null);
         final int[] count = {0};
         timer.addActionListener(e -> {
             dice.rollWithAnimation();
@@ -472,40 +549,40 @@ public class MonopolyGUI extends JFrame {
             int centerX = 4 * tileSize + 70;
             int centerY = 4 * tileSize + 50;
             int centerSize = 3 * tileSize;
+            int centerWidth = 3 * tileSize;
+            int centerHeight = centerWidth - 170;
 
-            // Draw central red square
-            g2.setColor(new Color(166, 6, 6)); // Crimson red
-            g2.fillRect(centerX, centerY+70, centerSize, centerSize-170);
+            // Scale factor (e.g., 1.5x bigger)
+            double scale = 1.5;
 
-            //draw Armopoly
+// Calculate new dimensions
+            int bigCenterWidth = (int)(centerWidth * scale);
+            int bigCenterHeight = (int)(centerHeight * scale);
+            int bigCenterX = centerX - (bigCenterWidth - centerWidth) / 2;
+            int bigCenterY = (centerY + 70) - (bigCenterHeight - centerHeight) / 2;
+
+// Draw larger rectangle with dark red background
+            g2.setColor(new Color(122, 4, 17));
+            g2.fillRect(bigCenterX, bigCenterY+10, bigCenterWidth, bigCenterHeight);
+
+// Draw border
+            g2.setColor(Color.BLACK);
+            g2.setStroke(new BasicStroke(4));
+            g2.drawRect(bigCenterX, bigCenterY+10, bigCenterWidth, bigCenterHeight);
+
+// Draw larger ARMOPOLY title
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 36));
+            g2.setFont(new Font("SansSerif", Font.PLAIN, (int)(32*scale))); // Bigger font
             FontMetrics fm = g2.getFontMetrics();
             String title = "ARMOPOLY";
             int titleWidth = fm.stringWidth(title);
-            int titleX = centerX + (centerSize - titleWidth) / 2;
-            int titleY = centerY + centerSize / 2;
+            int titleX = bigCenterX + (bigCenterWidth - titleWidth) / 2;
+            int titleY = bigCenterY+10 + bigCenterHeight / 2 + fm.getAscent() / 2 - 4;
             g2.drawString(title, titleX, titleY);
 
-            // Draw Chance Deck
-            int deckSize = tileSize - 10;
-            int chanceX = centerX + tileSize / 2 +300;
-            int chanceY = centerY + 2 * tileSize + 100;
-            g2.setColor(Color.ORANGE);
-            g2.fillRect(chanceX, chanceY, deckSize, deckSize-20);
-            g2.setColor(Color.BLACK);
-            g2.setFont(new Font("Arial", Font.BOLD, 14));
-            g2.drawString("Chance", chanceX + 5, chanceY + 20);
-
-            // Draw Community Chest Deck
-            int chestX = centerX + 2 * tileSize - 300;
-            int chestY = centerY + tileSize / 2 -100;
-            g2.setColor(new Color(173, 216, 230)); // Sky Blue
-            g2.fillRect(chestX, chestY, deckSize+10, deckSize-20);
-            g2.setColor(Color.BLACK);
-            g2.setFont(new Font("Arial", Font.BOLD, 12));
-            g2.drawString("Community", chestX + 2, chestY + 18);
-            g2.drawString("Chest", chestX + 12, chestY + 33);
+//
+            JPanel tilePanel = new JPanel();
+            tilePanel.setPreferredSize(new Dimension(100, 100));
 
             // Loop through the tiles and draw each one
             for (int i = 0; i < 40; i++) {
@@ -624,8 +701,12 @@ public class MonopolyGUI extends JFrame {
 
                         // Draw the name split over multiple lines
                         for (int j = 0; j < nameParts.length && j < 3; j++) {
-                            if (i > 0 && i < 10) {
-                                g2.drawString(nameParts[j], baseX, baseY + (j * lineHeight) + 20);
+                            if (i > 0 && i < 10 ) {
+                                if(nameParts[j]!="Chance") {
+                                    g2.drawString(nameParts[j], baseX, baseY + (j * lineHeight) + 20);
+                                }else {
+                                    g2.drawString(nameParts[j], baseX+10, baseY + (j * lineHeight) + 20);
+                                }
                             } else if (i > 30 && i < 40) {
                                 g2.drawString(nameParts[j], baseX + 30, baseY + (j * lineHeight));
                             } else {
@@ -679,9 +760,9 @@ public class MonopolyGUI extends JFrame {
                 int offsetY = (i / 2) * 20;
 
                 g2.setColor(player.getColor());
-                g2.fillOval(p.x + 10 + offsetX, p.y + 10 + offsetY, 25, 25); // Slightly larger token
+                g2.fillOval(p.x + 10 + offsetX, p.y + 35 + offsetY, 25, 25); // Slightly larger token
                 g2.setColor(Color.BLACK);
-                g2.drawOval(p.x + 10 + offsetX, p.y + 10 + offsetY, 25, 25); // Outline token
+                g2.drawOval(p.x + 10 + offsetX, p.y + 35 + offsetY, 25, 25); // Outline token
             }
         }
 
