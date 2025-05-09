@@ -52,7 +52,7 @@ public class CommunityChestCard {
 
         Random rand = new Random();
         int index = rand.nextInt(cardsCommunity.size());
-        return cardsCommunity.remove(index); // Remove and return the drawn card
+        return cardsCommunity.get(index); // Remove and return the drawn card
     }
 
     // Apply the effect of the card to the player
