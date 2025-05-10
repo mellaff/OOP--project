@@ -4,12 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import players.Player;
-import javax.swing.*;  // Add this for GUI dialogs
+import javax.swing.*;
 
+/**
+ * Represents a Chance card with a description and effect.
+ * Includes a static deck of predefined cards and logic to apply card effects to players.
+ */
 public class ChanceCard {
     private String description;
     private String effect;
 
+    /**
+     * Static list of all available Chance cards used in the game.
+     */
     public static ArrayList<ChanceCard> cards = new ArrayList<>(Arrays.asList(
             new ChanceCard("You visited Tatev Monastery.", "Gain spiritual bonus. Collect $100."),
             new ChanceCard("You took the Wings of Tatev and dropped your wallet.", "Pay $50 for a replacement ID."),
@@ -23,32 +30,58 @@ public class ChanceCard {
             new ChanceCard("You hosted a hiking tour in Lori.", "Collect $100 from each player."),
             new ChanceCard("Unexpected roadwork on Baghramyan Street.", "Pay $50 for tire repairs."),
             new ChanceCard("You bought too much tan and gata at Vernissage.", "Lose $20 in snacks."),
-            new ChanceCard("You received a wedding invitation in Etchmiadzin.", "Advance to next station. If you pass GO, collect $200."),
-            new ChanceCard("Real estate boom in Gyumri!", "Your next property purchase costs $100 less."),
+            // new ChanceCard("You received a wedding invitation in Etchmiadzin.", "Advance to next station. If you pass GO, collect $200."),
+            new ChanceCard("Real estate boom in Gyumri!", "Your next property purchase costs 20% less."),
             new ChanceCard("You danced too hard at a shurjpar.", "Miss 1 turn to recover."),
             new ChanceCard("You argued with a traffic cop over a no-parking sign.", "Go directly to Jail. Do not pass GO. Do not collect $200.")
     ));
 
+    /**
+     * Constructs a ChanceCard with a description and an effect.
+     *
+     * @param description the message shown to the player
+     * @param effect      the game effect to be applied
+     */
     public ChanceCard(String description, String effect) {
         this.description = description;
         this.effect = effect;
     }
 
+    /**
+     * Returns the description of the card.
+     *
+     * @return the description text
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the effect description of the card.
+     *
+     * @return the effect text
+     */
     public String getEffect() {
         return effect;
     }
 
+    /**
+     * Randomly selects a ChanceCard from the deck.
+     *
+     * @return a randomly selected ChanceCard
+     */
     public static ChanceCard drawCard() {
         Random rand = new Random();
         int index = rand.nextInt(cards.size());
-        return cards.get(index); // Remove and return
+        return cards.get(index);
     }
 
-    // Apply effect to the player
+    /**
+     * Applies the effect of the ChanceCard to the specified player.
+     *
+     * @param player  the player who drew the card
+     * @param players all players in the game (used for multi-player effects)
+     */
     public void applyChanceEffect(Player player, Player[] players) {
         switch (this.effect) {
             case "Advance to the next city. If unowned, you may buy it.":
@@ -98,9 +131,9 @@ public class ChanceCard {
                 player.pay(20);
                 break;
             case "Advance to next station. If you pass GO, collect $200.":
-                player.setMoveToNearestStation(true); // Adjust as needed
+                player.setMoveToNearestStation(true);
                 break;
-            case "Your next property purchase costs $100 less.":
+            case "Your next property purchase costs 20% less.":
                 player.setNextDiscount();
                 break;
             case "Miss 1 turn to recover.":

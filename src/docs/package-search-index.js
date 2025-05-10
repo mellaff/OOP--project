@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"board"},{"l":"board.tiles.general"},{"l":"board.tiles.property"},{"l":"cards"},{"l":"game.mechanics"},{"l":"players"}];updateSearchResults();

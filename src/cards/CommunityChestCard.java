@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import players.Player;
-import javax.swing.*;  // Add this for GUI dialogs
+import javax.swing.*;
 
+/**
+ * Represents a Community Chest card with a description and effect.
+ * Cards can be drawn randomly from a shared deck and applied to players.
+ */
 public class CommunityChestCard {
     private String description;
     private String effect;
 
-    // Static list shared by all players
+    /**
+     * Static list of Community Chest cards used in the game.
+     * Cards are drawn from this shared deck.
+     */
     public static ArrayList<CommunityChestCard> cardsCommunity = new ArrayList<>(Arrays.asList(
             new CommunityChestCard("Your aunt invited you to a khorovats picnic.", "Miss 1 turn to help prepare."),
             new CommunityChestCard("You helped your grandma make cherry preserves.", "Collect $25 from each player for your kindness."),
@@ -26,24 +33,45 @@ public class CommunityChestCard {
             new CommunityChestCard("You helped renovate your family dacha.", "Pay $50 for supplies."),
             new CommunityChestCard("You received lavash and cheese from your uncle in the village.", "Enjoy the snack. Collect $20."),
             new CommunityChestCard("You won first place in a patriotic poetry contest.", "Collect $150."),
-            new CommunityChestCard("You planted trees on Tree Planting Day.", "Advance to the next station."),
+            new CommunityChestCard("You planted trees on Tree Planting Day.", "Advance to the next city."),
             new CommunityChestCard("Lost wallet found at Cascade.", "Return it. Gain $10 in gratitude from the owner.")
     ));
 
+    /**
+     * Constructs a Community Chest card with a description and effect.
+     *
+     * @param description the text shown to the player
+     * @param effect      the logic to be executed when the card is used
+     */
     public CommunityChestCard(String description, String effect) {
         this.description = description;
         this.effect = effect;
     }
 
+    /**
+     * Returns the description of the card.
+     *
+     * @return the descriptive text
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Returns the effect text of the card.
+     *
+     * @return the effect description
+     */
     public String getEffect() {
         return effect;
     }
 
-    // Draw a random card and remove it from the list
+    /**
+     * Draws a random Community Chest card from the deck.
+     * The drawn card is removed from the list to avoid reuse.
+     *
+     * @return the drawn CommunityChestCard, or null if deck is empty
+     */
     public static CommunityChestCard drawCard() {
         if (cardsCommunity.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No more Community Chest cards left.");
@@ -52,10 +80,16 @@ public class CommunityChestCard {
 
         Random rand = new Random();
         int index = rand.nextInt(cardsCommunity.size());
-        return cardsCommunity.get(index); // Remove and return the drawn card
+        return cardsCommunity.remove(index);
     }
 
-    // Apply the effect of the card to the player
+    /**
+     * Applies the effect of the card to the given player.
+     * Supports interactions with other players as well.
+     *
+     * @param player  the player who drew the card
+     * @param players all players in the game (for effects that involve others)
+     */
     public void applyChestEffect(Player player, Player[] players) {
         switch (effect) {
             case "Miss 1 turn to help prepare.":
@@ -73,10 +107,10 @@ public class CommunityChestCard {
                 player.receive(100);
                 break;
             case "Advance to the next city.":
-                player.setMoveToNearestCity(true); // You need to define this method
+                player.setMoveToNearestCity(true);
                 break;
             case "Remove one negative card effect.":
-                player.addGetOutOfJailFreeCard();// Assume this clears jail or similar penalty
+                player.addGetOutOfJailFreeCard();
                 break;
             case "Pay $40 for damage repair.":
                 player.pay(40);
@@ -111,7 +145,7 @@ public class CommunityChestCard {
                 player.receive(150);
                 break;
             case "Advance to the next station.":
-                player.setMoveToNearestStation(true); // You'll define this based on your board layout
+                player.setMoveToNearestStation(true);
                 break;
             case "Return it. Gain $10 in gratitude from the owner.":
                 player.receive(10);

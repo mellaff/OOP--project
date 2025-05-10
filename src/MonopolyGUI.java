@@ -15,7 +15,11 @@ import java.util.Arrays;
 import java.util.Random;
 import board.tiles.general.Tile;
 
-
+/**
+ * The main GUI class for the Armopoly game (a Monopoly variant).
+ * Initializes the game board, players, visual elements, and manages player turns.
+ * Handles dice rolling, tile actions, card effects, and player bankruptcies.
+ */
 public class MonopolyGUI extends JFrame {
     private BoardPanel boardPanel;
     private JButton rollDiceButton;
@@ -33,6 +37,11 @@ public class MonopolyGUI extends JFrame {
     private boolean bankruptsyRecorded = false;
 
 
+    /**
+     * Entry point for launching the Monopoly game GUI.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -42,6 +51,10 @@ public class MonopolyGUI extends JFrame {
         });
     }
 
+    /**
+     * Constructs the main game window, initializes players, GUI components,
+     * and sets up the game board with all visual assets.
+     */
     public MonopolyGUI() {
         board = new Board();
         dice = new Dice();
@@ -83,7 +96,7 @@ public class MonopolyGUI extends JFrame {
         ImageIcon iconTrain = new ImageIcon("src/assets/train.png");
         Image scaledTrain = iconTrain.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 
-// Positions of the 4 train stations (adjust as needed)
+        // Positions of the 4 train stations
         int[][] positions = {
                 {800, 420}, // first station
                 {465, 85},  // second station
@@ -102,12 +115,12 @@ public class MonopolyGUI extends JFrame {
         ImageIcon iconChest = new ImageIcon("src/assets/community_chest_new.png");
         Image scaledChest = iconChest.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 
-// Positions of the 4 train stations (adjust as needed)
+        // Positions of chest icons
         int[][] positionsChest = {
-                {675,760}, // first station
-                {130, 630},  // second station
-                {675, 85},  // third station
-                {800, 140}  // fourth station
+                {675,760},
+                {130, 630},
+                {675, 85},
+                {800, 140}
         };
 
         for (int[] pos : positionsChest) {
@@ -122,12 +135,12 @@ public class MonopolyGUI extends JFrame {
         ImageIcon iconChance = new ImageIcon("src/assets/chance_new.png");
         Image scaledChance = iconChance.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
 
-// Positions of the 4 train stations (adjust as needed)
+        // Positions of the chance icons
         int[][] positionsChance = {
-                {325,760}, // first station
-                {130, 280},  // second station
-                {250, 85},  // third station
-                {800, 630}  // fourth station
+                {325,760},
+                {130, 280},
+                {250, 85},
+                {800, 630}
         };
 
         for (int[] pos : positionsChance) {
@@ -138,17 +151,14 @@ public class MonopolyGUI extends JFrame {
 
         boardPanel.repaint();
 
-
-        // EAST: Side Panel for Dice, Controls, Log, Status
         JPanel sidePanel = new JPanel();
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
 
-        // DicePanel
         dicePanel = new DicePanel();
+        dicePanel.setMaximumSize(new Dimension(200, 60));
         dicePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidePanel.add(dicePanel);
 
-        // Roll button and result
         rollDiceButton = new JButton("Roll Dice");
         rollDiceButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         diceResultLabel = new JLabel("Roll: -");
@@ -157,15 +167,13 @@ public class MonopolyGUI extends JFrame {
         sidePanel.add(rollDiceButton);
         sidePanel.add(diceResultLabel);
 
-        // Game Log
-        gameLogArea = new JTextArea(10, 20);
+        gameLogArea = new JTextArea(10, 25);
         gameLogArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(gameLogArea);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
         sidePanel.add(scrollPane);
 
-        // Player Money Status
         playerStatusPanel = new JPanel();
         playerStatusPanel.setLayout(new BoxLayout(playerStatusPanel, BoxLayout.Y_AXIS));
         playerMoneyLabels = new JLabel[players.length];
@@ -178,7 +186,6 @@ public class MonopolyGUI extends JFrame {
         sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
         sidePanel.add(playerStatusPanel);
 
-        // Add side panel to EAST
         add(sidePanel, BorderLayout.EAST);
 
         currentTurnLabel = new JLabel("Turn: " + players[currentPlayerIndex].getName());
@@ -188,8 +195,6 @@ public class MonopolyGUI extends JFrame {
         sidePanel.add(Box.createRigidArea(new Dimension(0, 10)));
         sidePanel.add(currentTurnLabel);
 
-
-        // Dice roll action
         rollDiceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -198,10 +203,19 @@ public class MonopolyGUI extends JFrame {
         });
     }
 
+    /**
+     * Custom panel used to display and repaint the current state of the dice.
+     */
     private class DicePanel extends JPanel {
         private int die1 = 1;
         private int die2 = 1;
 
+        /**
+         * Sets the dice face values to be displayed.
+         *
+         * @param die1 value of first die (1–6)
+         * @param die2 value of second die (1–6)
+         */
         public void setDice(int die1, int die2) {
             this.die1 = die1;
             this.die2 = die2;
@@ -215,6 +229,14 @@ public class MonopolyGUI extends JFrame {
             drawDie(g, die2, 100, 20);
         }
 
+        /**
+         * Draws a die face at a specified location.
+         *
+         * @param g     graphics context
+         * @param value die value (1–6)
+         * @param x     x-coordinate
+         * @param y     y-coordinate
+         */
         private void drawDie(Graphics g, int value, int x, int y) {
             g.setColor(Color.WHITE);
             g.fillRoundRect(x, y, 60, 60, 15, 15);
@@ -245,11 +267,21 @@ public class MonopolyGUI extends JFrame {
         }
     }
 
+    /**
+     * Logs a string message to the game log text area.
+     *
+     * @param message the message to append to the log
+     */
     private void log(String message) {
         gameLogArea.append(message + "\n");
         gameLogArea.setCaretPosition(gameLogArea.getDocument().getLength());
     }
 
+    /**
+     * Prompts the user to enter player count and names via dialog boxes.
+     *
+     * @return an array of player names
+     */
     private String[] getPlayerNames() {
         int numPlayers;
         while (true) {
@@ -280,17 +312,21 @@ public class MonopolyGUI extends JFrame {
         return names;
     }
 
+    /**
+     * Executes the dice roll, moves the current player, and processes
+     * the resulting tile actions or card draws.
+     */
     private void rollDiceAndMove() {
         rollDiceButton.setEnabled(false); // disable during animation
 
-        Timer timer = new Timer(500, null);
+        Timer timer = new Timer(200, null);
         final int[] count = {0};
         timer.addActionListener(e -> {
             dice.rollWithAnimation();
             dicePanel.setDice(dice.getDie1(), dice.getDie2());
 
             count[0]++;
-            if (count[0] >= 10) {  // roll 10 times (1 sec)
+            if (count[0] >= 20) {
                 timer.stop();
 
                 int die1 = dice.getDie1();
@@ -309,7 +345,7 @@ public class MonopolyGUI extends JFrame {
 
                 Player currentPlayer = players[currentPlayerIndex];
                 currentPlayer.move(roll);
-                if(currentPlayer.passedGo() && ((board.getTile(currentPlayer.getPosition()).getType()!="Card")||(board.getTile(currentPlayer.getPosition()).getType()!="Go To Jail"))){
+                if(currentPlayer.passedGo() && ((board.getTile(currentPlayer.getPosition()).getType().equals("Jail"))||(board.getTile(currentPlayer.getPosition()).getType().equals("Go To Jail")))){
                     JOptionPane.showMessageDialog(this,
                             "Passed Go!!! Collect $200.",
                             "Go Passed",
@@ -508,6 +544,9 @@ public class MonopolyGUI extends JFrame {
         timer.start();
     }
 
+    /**
+     * Updates the on-screen money display for each player.
+     */
     private void updatePlayerMoneyDisplay() {
         for (int i = 0; i < players.length; i++) {
             playerMoneyLabels[i].setText(players[i].getName() + ": $" + players[i].getMoney());
@@ -526,16 +565,30 @@ public class MonopolyGUI extends JFrame {
             new Color(184, 134, 11)   // Dark Goldenrod
     ));
 
+    /**
+     * Returns a random available color for a player.
+     *
+     * @return a unique Color from the available pool
+     */
     private Color getRandomColor() {
         int index = random.nextInt(availableColors.size());
         return availableColors.remove(index);
     }
 
 
+    /**
+     * Custom panel representing the game board layout.
+     * Handles tile drawing, player tokens, and title rendering.
+     */
     private class BoardPanel extends JPanel {
         private final int tileSize = 70;
         private Player[] players;
 
+        /**
+         * Constructs a new BoardPanel with the given players.
+         *
+         * @param players the array of Player objects in the game
+         */
         public BoardPanel(Player[] players) {
             this.players = players;
             setBackground(new Color(202, 219, 232));
@@ -552,25 +605,21 @@ public class MonopolyGUI extends JFrame {
             int centerWidth = 3 * tileSize;
             int centerHeight = centerWidth - 170;
 
-            // Scale factor (e.g., 1.5x bigger)
             double scale = 1.5;
 
-// Calculate new dimensions
+
             int bigCenterWidth = (int)(centerWidth * scale);
             int bigCenterHeight = (int)(centerHeight * scale);
             int bigCenterX = centerX - (bigCenterWidth - centerWidth) / 2;
             int bigCenterY = (centerY + 70) - (bigCenterHeight - centerHeight) / 2;
 
-// Draw larger rectangle with dark red background
             g2.setColor(new Color(122, 4, 17));
             g2.fillRect(bigCenterX, bigCenterY+10, bigCenterWidth, bigCenterHeight);
 
-// Draw border
             g2.setColor(Color.BLACK);
             g2.setStroke(new BasicStroke(4));
             g2.drawRect(bigCenterX, bigCenterY+10, bigCenterWidth, bigCenterHeight);
 
-// Draw larger ARMOPOLY title
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("SansSerif", Font.PLAIN, (int)(32*scale))); // Bigger font
             FontMetrics fm = g2.getFontMetrics();
@@ -580,23 +629,16 @@ public class MonopolyGUI extends JFrame {
             int titleY = bigCenterY+10 + bigCenterHeight / 2 + fm.getAscent() / 2 - 4;
             g2.drawString(title, titleX, titleY);
 
-//
             JPanel tilePanel = new JPanel();
             tilePanel.setPreferredSize(new Dimension(100, 100));
 
-            // Loop through the tiles and draw each one
             for (int i = 0; i < 40; i++) {
-                // Get the coordinates for each tile
+
                 Point p = getTileCoordinates(i);
 
-                // Get the tile object from the Board class (make sure Board is available)
                 Tile tile = board.getTile(i);
 
-
-                g2.setColor(new Color(202, 219, 232)); // Light color for even tiles
-
-                // Darker color for odd tiles
-
+                g2.setColor(new Color(202, 219, 232));
 
                 if ((i > 0 && i < 10) || (i > 20 && i < 30)) {
                     g2.fillRect(p.x, p.y, tileSize + 5, tileSize + 40);
@@ -665,8 +707,6 @@ public class MonopolyGUI extends JFrame {
                     }
                 }
 
-
-                // Draw the name of the tile
                 if (tile != null) {
 
                     String tileName = tile.getName();
@@ -699,7 +739,6 @@ public class MonopolyGUI extends JFrame {
                         int baseX = p.x + 8;
                         int baseY = p.y + 25;
 
-                        // Draw the name split over multiple lines
                         for (int j = 0; j < nameParts.length && j < 3; j++) {
                             if (i > 0 && i < 10 ) {
                                 if(nameParts[j]!="Chance") {
@@ -714,7 +753,6 @@ public class MonopolyGUI extends JFrame {
                             }
                         }
 
-                        // Draw property details with smaller font
                         if (tile instanceof Property) {
                             if (i > 0 && i < 10) {
                                 g2.setFont(new Font("SansSerif", Font.PLAIN, 9));
@@ -732,7 +770,6 @@ public class MonopolyGUI extends JFrame {
                         }
                     }
 
-                    // Draw ownership circle
                     if (tile instanceof Property && ((Property) tile).isOwned()) {
                         g2.setColor(((Property) tile).getOwner().getColor());
                         if(i>0&&i<10){
@@ -749,15 +786,13 @@ public class MonopolyGUI extends JFrame {
                 }
             }
 
-                // Draw player tokens
             for (int i = 0; i < players.length; i++) {
                 Player player = players[i];
                 int pos = player.getPosition();
                 Point p = getTileCoordinates(pos);
 
-                // Slight offset for each player so tokens don't overlap
                 int offsetX = (i % 2) * 20;
-                int offsetY = (i / 2) * 20;
+                int offsetY = (i / 2) * 10;
 
                 g2.setColor(player.getColor());
                 g2.fillOval(p.x + 10 + offsetX, p.y + 35 + offsetY, 25, 25); // Slightly larger token
@@ -767,14 +802,20 @@ public class MonopolyGUI extends JFrame {
         }
 
 
-
+        /**
+         * Returns the pixel coordinates for a tile on the board
+         * based on its tile index (0–39).
+         *
+         * @param tileNumber the board tile number
+         * @return a Point representing the x/y position to draw
+         */
         private Point getTileCoordinates(int tileNumber) {
             double x = 0, y = 0;
             if(tileNumber==0){
                 x = 10.58;
                 y = 10.015;
             }
-             else if (tileNumber > 0 && tileNumber < 10) { // Bottom row (right to left)
+             else if (tileNumber > 0 && tileNumber < 10) {
                 x = 10.55 - tileNumber;
                 y = 10.015;
             }
@@ -782,7 +823,7 @@ public class MonopolyGUI extends JFrame {
                 x = 10 - tileNumber;
                 y = 10.015;
             }
-            else if (tileNumber > 10 && tileNumber < 20) { // Left column (bottom to top)
+            else if (tileNumber > 10 && tileNumber < 20) {
                 x = 0;
                 y = 19.93 - tileNumber;
             }
@@ -790,10 +831,10 @@ public class MonopolyGUI extends JFrame {
                 x = 0;
                 y = 19.4-tileNumber;
             }
-            else if (tileNumber > 20 && tileNumber <= 30) { // Top row (left to right)
+            else if (tileNumber > 20 && tileNumber <= 30) {
                 x = tileNumber - 19.42;
                 y = -0.61;
-            } else if (tileNumber > 30 && tileNumber < 40) { // Right column (top to bottom)
+            } else if (tileNumber > 30 && tileNumber < 40) {
                 x = 10.58;
                 y = tileNumber - 30.05;
             }
